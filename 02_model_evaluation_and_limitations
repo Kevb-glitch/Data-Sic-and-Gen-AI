@@ -1,0 +1,53 @@
+# Model Evaluation and Limitations
+
+## Overview
+
+This notebook focuses on evaluating the performance of a simple machine learning model and reflecting on its limitations. The aim is not to optimise accuracy, but to demonstrate an understanding of how model performance is assessed and why evaluation is critical in applied business contexts.
+
+import pandas as pd
+import numpy as np
+
+from sklearn.datasets import load_diabetes
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+## Dataset and Model Setup
+
+The same dataset and modelling approach used in the previous notebook are applied here to ensure consistency. This allows the focus to remain on evaluation and interpretation rather than model development.
+
+# Load the dataset
+data = load_diabetes(as_frame=True)
+df = data.frame
+
+# Features and target
+X = df.drop(columns=['target'])
+y = df['target']
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+## Model Evaluation
+
+To assess model performance, predictions are generated for the test dataset and evaluated using mean squared error (MSE). This metric captures the average squared difference between predicted and actual values.
+
+y_pred = model.predict(X_test)
+mse = mean_squared_error(y_test, y_pred)
+
+mse
+
+## Interpretation of Results
+
+The mean squared error provides a quantitative indication of model performance on unseen data. While useful, this metric alone does not fully capture whether a model is suitable for real-world decision-making.
+
+
+## Limitations and Practical Considerations
+
+Although the model demonstrates reasonable performance on this dataset, several limitations must be considered. The dataset used is relatively clean and structured, which is rarely the case in real organisational environments. As a result, model performance may deteriorate when exposed to noisy, incomplete, or biased data.
+
+Additionally, this evaluation does not account for issues such as data drift or changing business conditions over time. In practice, continuous monitoring and re-evaluation would be necessary to ensure that model outputs remain reliable and relevant for decision-making.
+
